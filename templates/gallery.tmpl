@@ -1,0 +1,6 @@
+<div class="gallery">
+
+    {% for item in photos %}
+      <a class='gallery_link' href="/?img={{item}}"><img src="{{[directory, item]|join}}"></a>
+    {% endfor %}
+</div>

@@ -1,0 +1,7 @@
+<header>
+    <nav>
+        {% for item in nav %}
+        <a href="{{ item.url }}">{{ item.name|upper }}</a></td>
+        {% endfor %}
+    </nav>
+</header>
