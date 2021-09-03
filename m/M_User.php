@@ -1,20 +1,15 @@
 <?
-include_once 'config/db.php';
-class M_User {
+
+class M_User extends Model {
 
     public $user_id, $user_login, $user_name, $user_password;
 
     public function __construct () {
     }
 
-    public function logPassCrypt ($login, $pass): string
+    public function logPassCrypt ($login, $pass)
     {
         return md5($login) . md5($pass);
-    }
-
-    public function dbConnecting (): PDO
-    {
-        return new PDO(DRIVER . ':host='. SERVER . ';dbname=' . DB, USERNAME, PASSWORD);
     }
 
     public function get ($id) {
@@ -27,7 +22,7 @@ class M_User {
         $connect = $this->dbConnecting();
         $user = $connect->query("SELECT * FROM users WHERE login = '" . $login . "'")->fetch();
         if (!$user) {
-            $connect->exec("INSERT INTO users VALUES (null, '" . $login . "', '" . $this->logPassCrypt($login, $pass) . "')");
+            $connect->exec("INSERT INTO users (users.id, users.login, users.password) VALUES (null, '" . $login . "', '" . $this->logPassCrypt($login, $pass) . "')");
             return "<p>Вы успешно зарегистрировались!</p>";
         } else {
             return "<p>Пользователь с таким именем уже есть =(</p>";

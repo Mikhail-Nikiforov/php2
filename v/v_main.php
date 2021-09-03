@@ -1,12 +1,3 @@
-<?php
-/**
- * Основной шаблон
- * ===============
- * $title - заголовок
- * $content - HTML страницы
- */
-?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -20,11 +11,10 @@
 	</div>
 	
 	<div id="menu">
-		<a href="index.php">Читать текст</a> |
-		<a href="index.php?c=page&act=edit">Редактировать текст</a> |
+		<a href="index.php">Главная</a> |
         <?php
         if ($user) {
-            echo '<a href="index.php?c=User&act=info">Личный кабинет</a> | <a href="index.php?c=User&act=logout">Выйти</a>';
+            echo '<a href="index.php?c=catalog&act=show">Каталог</a>  | <a href="index.php?c=basket&act=show">Корзина</a> | <a href="index.php?c=User&act=info">Личный кабинет</a> | <a href="index.php?c=User&act=logout">Выйти</a>';
         } else {
             echo '<a href="index.php?c=User&act=auth">Авторизация</a> | <a href="index.php?c=User&act=reg">Регистрация</a>';
         }
@@ -38,5 +28,9 @@
 	<div id="footer">
 		Все права защищены. Адрес. Телефон.
 	</div>
+    <script type='text/javascript'>
+        <?=$scriptJs?>
+    </script>
+
 </body>
 </html>

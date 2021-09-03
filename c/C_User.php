@@ -1,25 +1,20 @@
 <?php
-//
-// Контроллер страницы чтения.
-//
+
 include_once('m/M_User.php');
 
 class C_User extends C_Base
 {
-	//
-	// Конструктор.
-	//
 
     public function action_info() {
 
         $get_user = new M_User();
         $user_info = $get_user->get($_SESSION['user_id']);
-        $this->title .= '::' . $user_info['login'];
+        $this->title .= 'Личный кабинет';
         $this->content = $this->Template('v/v_info.php', array('userlogin' => $user_info['login']));
     }
 
 	public function action_auth(){
-		$this->title .= '::Авторизация';
+		$this->title .= 'Авторизация';
         $user = new M_User();
 		$info = "Пользователь не авторизован";
         if($_POST){
@@ -35,7 +30,7 @@ class C_User extends C_Base
 
     public function action_reg() {
 
-        $this->title .= '::Регистрация';
+        $this->title .= 'Регистрация';
         $this->content = $this->Template('v/v_reg.php', array());
 
         if($this->isPost()) {

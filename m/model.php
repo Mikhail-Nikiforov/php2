@@ -1,1 +1,11 @@
-<?phpfunction text_get(){	return file_get_contents('data/text.txt');}function text_set($text){	file_put_contents('data/text.txt', $text);}
+<?php
+
+include_once 'config/db.php';
+
+class Model
+{
+    public function dbConnecting (): PDO
+    {
+        return new PDO(DRIVER . ':host='. SERVER . ';dbname=' . DB, USERNAME, PASSWORD);
+    }
+}

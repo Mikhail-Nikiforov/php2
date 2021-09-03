@@ -1,28 +1,23 @@
 <?php
-//
-// Базовый контроллер сайта.
-//
 
 include_once 'm/M_User.php';
 
 abstract class C_Base extends C_Controller
 {
-	protected $title;		// заголовок страницы
-	protected $content;		// содержание страницы
+	protected $title;
+	protected $content;
+    protected $scriptJs;
     protected $keyWords;
 
 
      protected function before(){
 
-		$this->title = 'тест';
+		$this->title = '';
 		$this->content = '';
 		$this->keyWords="...";
 
 	}
-	
-	//
-	// Генерация базового шаблона
-	//	
+
 	public function render()
 	{
         $get_user = new M_User();
@@ -31,7 +26,7 @@ abstract class C_Base extends C_Controller
         } else {
             $user_info['name'] = false;
         }
-		$vars = array('title' => $this->title, 'content' => $this->content,'kw' => $this->keyWords, 'user' => $user_info['login']);
+		$vars = array('title' => $this->title, 'content' => $this->content,'kw' => $this->keyWords, 'user' => $user_info['login'], 'scriptJs' => $this->scriptJs);
 		$page = $this->Template('v/v_main.php', $vars);				
 		echo $page;
 	}	

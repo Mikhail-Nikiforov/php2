@@ -1,16 +1,11 @@
 <?php
-//
-// Базовый класс контроллера.
-//
 
 session_start();
 
 abstract class C_Controller
 {
-	// Генерация внешнего шаблона
 	protected abstract function render();
-	
-	// Функция отрабатывающая до основного метода
+
 	protected abstract function before();
 	
 	public function Request($action)
@@ -19,26 +14,18 @@ abstract class C_Controller
 		$this->$action();   //$this->action_index
 		$this->render();
 	}
-	
-	//
-	// Запрос произведен методом GET?
-	//
+
 	protected function IsGet()
 	{
 		return $_SERVER['REQUEST_METHOD'] == 'GET';
 	}
 
-	//
-	// Запрос произведен методом POST?
-	//
 	protected function IsPost()
 	{
 		return $_SERVER['REQUEST_METHOD'] == 'POST';
 	}
 
-	//
-	// Генерация HTML шаблона в строку.
-	//
+
 	protected function Template($fileName, $vars = array())
 	{
 		// Установка переменных для шаблона.
