@@ -9,7 +9,6 @@ class C_Page extends C_Base
 	    $page = new M_Page();
 		$this->title .= 'Главная страница';
 		$text = $page->text_get();
-		//$today = date();
 		$this->content = $this->Template('v/v_index.php', array('text' => $text));	
 	}
 

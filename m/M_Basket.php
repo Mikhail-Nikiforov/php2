@@ -6,9 +6,9 @@ class M_Basket extends Model
 {
     public function get_basket() {
         $connect = $this->dbConnecting();
-        return $connect->query("SELECT * FROM baskets INNER JOIN goods ON baskets.id_product = goods.id WHERE baskets.id_user = '" . $_SESSION['user_id'] . "'")->fetchAll(PDO::FETCH_ASSOC);
+        return $connect->query("SELECT * FROM baskets INNER JOIN goods ON baskets.id_product = goods.id WHERE (baskets.id_user = '" . $_SESSION['user_id'] . "' AND baskets.status IS NULL)")->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function show () {
+    public function show() {
         $basket_db = $this->get_basket();
         $basket_html = '';
         if (count($basket_db)) {
@@ -42,5 +42,18 @@ class M_Basket extends Model
             $total_sum += $product['price'] * $product['quantity'];
         }
         return $total_sum;
+    }
+
+    public function order() {
+        $connect = $this->dbConnecting();
+        $basket_db = $connect->query("SELECT * FROM baskets WHERE (baskets.id_user = '" . $_SESSION['user_id'] . "' AND baskets.status IS NULL)")->fetchAll(PDO::FETCH_ASSOC);
+        var_dump($basket_db);
+        $connect->exec("INSERT INTO orders (orders.id_order, orders.id_user, orders.amount, orders.datetime_create, orders.id_order_status, orders.contact) VALUES (null, '" . $_SESSION['user_id'] . "','" . $this->total_sum() . "', '" . date('Y/m/d H:i:s', time()) . "', '1', '" . $_POST['mobile'] . "')");
+        $order_id = $connect->lastInsertId();
+        foreach ($basket_db as $product) {
+            var_dump($product);
+            $connect->exec("UPDATE baskets SET baskets.status = '1', baskets.id_order = '" . $order_id ."' WHERE id = '" . $product['id'] . "'");
+            var_dump($product);
+        }
     }
 }

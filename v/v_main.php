@@ -18,6 +18,9 @@
         } else {
             echo '<a href="index.php?c=User&act=auth">Авторизация</a> | <a href="index.php?c=User&act=reg">Регистрация</a>';
         }
+        if ($_SESSION['user_status'] == 'admin') {
+            echo '| <a href="index.php?c=order&act=show">Управление заказами</a>';
+        }
         ?>
 	</div>
 	

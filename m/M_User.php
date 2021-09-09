@@ -35,6 +35,9 @@ class M_User extends Model {
         if ($user) {
             if ($user["password"] == $this->logPassCrypt($user["login"], strip_tags($pass))) {
                 $_SESSION["user_id"] = $user["id"];
+                if ($user['user_status'] == 'admin') {
+                    $_SESSION['user_status'] = $user['user_status'];
+                }
                 return 'Добро пожаловать в систему, ' . $user["login"] . '!';
             } else {
                 return 'Пароль не верный!';
