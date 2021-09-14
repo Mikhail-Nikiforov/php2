@@ -4,11 +4,19 @@ include_once 'config/catalog.php';
 
 class M_Order extends Model
 {
-    public function show () {
+    public function show ($role = 0) {
         $connect = $this->dbConnecting();
-        $orders_db = $connect->query("SELECT * FROM orders 
+
+        if ($role === 0) {
+            $orders_db = $connect->query("SELECT * FROM orders 
                                                INNER JOIN order_status ON orders.id_order_status = order_status.id_order_status
                                                INNER JOIN users ON orders.id_user = users.id")->fetchAll();
+        } else if ($role == 'user') {
+            $orders_db = $connect->query("SELECT * FROM orders 
+                                               INNER JOIN order_status ON orders.id_order_status = order_status.id_order_status
+                                               INNER JOIN users ON orders.id_user = users.id
+                                               WHERE orders.id_user = '" . $_SESSION['user_id'] . "'")->fetchAll();
+        }
         $orders = [];
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 03 2021 г., 15:59
+-- Время создания: Сен 14 2021 г., 14:52
 -- Версия сервера: 10.1.44-MariaDB
 -- Версия PHP: 7.3.26
 
@@ -32,16 +32,21 @@ CREATE TABLE `baskets` (
   `id_user` int(11) NOT NULL,
   `id_product` int(11) NOT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL
+  `status` int(11) DEFAULT NULL,
+  `id_order` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `baskets`
 --
 
-INSERT INTO `baskets` (`id`, `id_user`, `id_product`, `quantity`, `status`) VALUES
-(22, 25, 114, 7, NULL),
-(23, 25, 119, 6, NULL);
+INSERT INTO `baskets` (`id`, `id_user`, `id_product`, `quantity`, `status`, `id_order`) VALUES
+(13, 25, 114, 2, 1, 37),
+(14, 25, 115, 1, 1, 37),
+(15, 25, 114, 2, 1, 41),
+(16, 25, 119, 2, 1, 41),
+(17, 25, 114, 2, NULL, 0),
+(18, 26, 114, 1, 1, 42);
 
 -- --------------------------------------------------------
 
@@ -86,8 +91,18 @@ CREATE TABLE `orders` (
   `id_user` int(11) NOT NULL,
   `amount` double NOT NULL,
   `datetime_create` datetime NOT NULL,
-  `id_order_status` int(11) NOT NULL
+  `id_order_status` int(11) NOT NULL,
+  `contact` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `orders`
+--
+
+INSERT INTO `orders` (`id_order`, `id_user`, `amount`, `datetime_create`, `id_order_status`, `contact`) VALUES
+(37, 25, 75289, '2021-09-08 16:52:55', 5, '123'),
+(41, 25, 201978, '2021-09-08 17:01:00', 1, '123'),
+(42, 26, 57990, '2021-09-14 14:42:26', 1, '123');
 
 -- --------------------------------------------------------
 
@@ -100,6 +115,15 @@ CREATE TABLE `order_status` (
   `order_status_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `order_status`
+--
+
+INSERT INTO `order_status` (`id_order_status`, `order_status_name`) VALUES
+(1, 'Не обработан'),
+(2, 'Обработан'),
+(5, 'Отменён');
+
 -- --------------------------------------------------------
 
 --
@@ -110,17 +134,19 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(55) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `user_last_action` timestamp NOT NULL
+  `user_last_action` timestamp NOT NULL,
+  `user_status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `user_last_action`) VALUES
-(22, 'Михаил', 'eb8b4da0a5519e12ead4ba90f11b91a0202cb962ac59075b964b07152d234b70', '0000-00-00 00:00:00'),
-(23, '', 'd41d8cd98f00b204e9800998ecf8427e827ccb0eea8a706c4c34a16891f84e7b', '0000-00-00 00:00:00'),
-(25, 'admin', '21232f297a57a5a743894a0e4a801fc321232f297a57a5a743894a0e4a801fc3', '0000-00-00 00:00:00');
+INSERT INTO `users` (`id`, `login`, `password`, `user_last_action`, `user_status`) VALUES
+(22, 'Михаил', 'eb8b4da0a5519e12ead4ba90f11b91a0202cb962ac59075b964b07152d234b70', '0000-00-00 00:00:00', NULL),
+(23, '', 'd41d8cd98f00b204e9800998ecf8427e827ccb0eea8a706c4c34a16891f84e7b', '0000-00-00 00:00:00', NULL),
+(25, 'admin', '21232f297a57a5a743894a0e4a801fc321232f297a57a5a743894a0e4a801fc3', '0000-00-00 00:00:00', 'admin'),
+(26, 'Mikhail', '37c09709af3da468f7a1bc723e943ec7202cb962ac59075b964b07152d234b70', '0000-00-00 00:00:00', NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -143,7 +169,6 @@ ALTER TABLE `goods`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id_order`),
-  ADD UNIQUE KEY `id_order_status_2` (`id_order_status`),
   ADD KEY `id_order_status` (`id_order_status`);
 
 --
@@ -167,7 +192,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `baskets`
 --
 ALTER TABLE `baskets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `goods`
@@ -179,19 +204,19 @@ ALTER TABLE `goods`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT для таблицы `order_status`
 --
 ALTER TABLE `order_status`
-  MODIFY `id_order_status` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_order_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

@@ -1,6 +1,7 @@
 <?php
 
 include_once('m/M_User.php');
+include_once('m/M_Order.php');
 
 class C_User extends C_Base
 {
@@ -8,9 +9,10 @@ class C_User extends C_Base
     public function action_info() {
 
         $get_user = new M_User();
+        $orders = new M_Order();
         $user_info = $get_user->get($_SESSION['user_id']);
         $this->title .= 'Личный кабинет';
-        $this->content = $this->Template('v/v_info.php', array('userlogin' => $user_info['login']));
+        $this->content = $this->Template('v/v_info.php', array('userlogin' => $user_info['login'], 'orders_list' => $orders->show('user')));
     }
 
 	public function action_auth(){

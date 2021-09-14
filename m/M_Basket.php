@@ -47,7 +47,6 @@ class M_Basket extends Model
     public function order() {
         $connect = $this->dbConnecting();
         $basket_db = $connect->query("SELECT * FROM baskets WHERE (baskets.id_user = '" . $_SESSION['user_id'] . "' AND baskets.status IS NULL)")->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($basket_db);
         $connect->exec("INSERT INTO orders (orders.id_order, orders.id_user, orders.amount, orders.datetime_create, orders.id_order_status, orders.contact) VALUES (null, '" . $_SESSION['user_id'] . "','" . $this->total_sum() . "', '" . date('Y/m/d H:i:s', time()) . "', '1', '" . $_POST['mobile'] . "')");
         $order_id = $connect->lastInsertId();
         foreach ($basket_db as $product) {
